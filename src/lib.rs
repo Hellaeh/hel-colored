@@ -2,7 +2,7 @@ mod colors;
 
 use colors::*;
 
-trait Colored {
+pub trait Colored {
 	fn blue(&self) -> String;
 	fn cyan(&self) -> String;
 	fn green(&self) -> String;
