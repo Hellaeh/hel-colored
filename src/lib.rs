@@ -18,37 +18,37 @@ fn wrap(color: &str, str: &str) -> String {
 	format!("{color}{str}{END}")
 }
 
-impl Colored for &'static str {
+impl<T: AsRef<str>> Colored for T {
 	fn blue(&self) -> String {
-		wrap(BLUE, self)
+		wrap(BLUE, self.as_ref())
 	}
 
 	fn cyan(&self) -> String {
-		wrap(CYAN, self)
+		wrap(CYAN, self.as_ref())
 	}
 
 	fn green(&self) -> String {
-		wrap(GREEN, self)
+		wrap(GREEN, self.as_ref())
 	}
 
 	fn magenta(&self) -> String {
-		wrap(MAGENTA, self)
+		wrap(MAGENTA, self.as_ref())
 	}
 
 	fn orange(&self) -> String {
-		wrap(ORANGE, self)
+		wrap(ORANGE, self.as_ref())
 	}
 
 	fn red(&self) -> String {
-		wrap(RED, self)
+		wrap(RED, self.as_ref())
 	}
 
 	fn yellow(&self) -> String {
-		wrap(YELLOW, self)
+		wrap(YELLOW, self.as_ref())
 	}
 
 	fn rgb(&self, r: u8, g: u8, b: u8) -> String {
-		wrap(&format!("\x1b[38;2;{r};{g};{b}m"), self)
+		wrap(&format!("\x1b[38;2;{r};{g};{b}m"), self.as_ref())
 	}
 }
 
@@ -58,11 +58,18 @@ mod tests {
 
 	#[test]
 	fn primary() {
-		assert_eq!("\x1b[38;2;225;50;50mHello\x1b[0m", "Hello".red());
+		let test = "Hello 12345";
+
+		assert_eq!("\x1b[38;2;225;50;50mHello 12345\x1b[0m", test.red());
 		assert_eq!(
-			"\x1b[38;2;255;255;255mHello\x1b[0m",
-			"Hello".rgb(255, 255, 255)
+			"\x1b[38;2;255;255;255mHello 12345\x1b[0m",
+			test.rgb(255, 255, 255)
 		);
+
+		assert_eq!(
+			test.to_owned().red(),
+			"\x1b[38;2;225;50;50mHello 12345\x1b[0m"
+		)
 	}
 
 	#[test]
