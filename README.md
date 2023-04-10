@@ -1,11 +1,14 @@
 # hel-colored
+
 ANSI string colorizer and styler
 
 ## Features
-* Lazy (no-alloc, no-copy) until needed, e.g. `to_string` called
-* Made with performance in mind
+
+- Lazy (no-alloc, no-copy, until needed), e.g. `to_string` called
+- Made with performance in mind
 
 ## Examples
+
 ```rust
 "Hello World!".bold().blue().underline();
 
@@ -16,6 +19,7 @@ println!("{green_blue_green_text}");
 ```
 
 ## How to install
+
 ```
 cargo add hel-colored
 ```

@@ -111,6 +111,7 @@ impl<T> ANSIString<T> {
 
 		let mut prev = 0;
 
+		// TODO work directly with bytes
 		for (i, _) in str.match_indices(SGR_RESET_SEQ_STR) {
 			bytes.fmt_str_from(prev..i, f)?;
 
@@ -152,7 +153,7 @@ mod test {
 
 	use test::Bencher;
 
-	use crate::Styled;
+	use crate::{Colored, Styled};
 
 	// const SMALL_STR: &str = "Hello 12345";
 
