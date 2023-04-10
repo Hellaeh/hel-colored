@@ -1,11 +1,10 @@
 [package]
 name = "hel-colored"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
-description = "ANSI escape string colorizer"
+description = "ANSI string colorizer and styler"
 license = "MIT"
 repository = "https://github.com/Hellaeh/hel-colored.git"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
+[dev-dependencies]
+colored = "2.0.0"
