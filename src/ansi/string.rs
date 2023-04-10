@@ -152,7 +152,7 @@ mod test {
 
 	use test::Bencher;
 
-	use crate::{ANSIString, Styled};
+	use crate::Styled;
 
 	// const SMALL_STR: &str = "Hello 12345";
 
