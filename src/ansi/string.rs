@@ -124,7 +124,7 @@ impl<T> ANSIString<T> {
 		if prev > 0 {
 			bytes.fmt_str_from(prev.., f)
 		} else {
-			std::fmt::Display::fmt(self.inner.as_ref(), f)
+			std::fmt::Display::fmt(str, f)
 		}
 	}
 }
