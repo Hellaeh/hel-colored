@@ -3,7 +3,7 @@ name = "hel-colored"
 version = "0.3.2"
 edition = "2021"
 description = "ANSI string colorizer and styler"
-license = "MIT"
+license = "GPL-3.0"
 repository = "https://github.com/Hellaeh/hel-colored.git"
 
 [dev-dependencies]
