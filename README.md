@@ -4,7 +4,7 @@ ANSI string colorizer and styler
 
 ## Features
 
-- Lazy (no-alloc, no-copy, until needed), e.g. `to_string` called
+- Lazy (no-alloc, no-copy, until needed, e.g. `to_string` called)
 - Made with performance in mind
 
 ## Examples
