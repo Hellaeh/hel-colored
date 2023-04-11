@@ -123,5 +123,10 @@ fn using_builder() {
 	let res = builder.build(test).to_string();
 
 	println!("{}", res);
-	assert!(test.len() < res.len())
+	assert!(test.len() < res.len());
+
+	let builder: ANSIStringBuilder = ANSIStringBuilder::new().bold().underline().orange();
+	let str1 = builder.build("Hello");
+	let str2 = builder.build("World!");
+	println!("{str1}, {str2}");
 }
