@@ -79,11 +79,12 @@ fn format() {
 	let test = TEST_STRING!();
 
 	let s1 = format!("{:.1}", test.bold());
-	let s2 = test.chars().next().unwrap().to_string().bold().to_string();
+	let s2 = test.split_at(1).0.bold().to_string();
+
 	assert_eq!(s1, s2);
 
 	let len = test.len();
-	let s1 = format!("{:w$}", test.red(), w = len);
+	let s1 = format!("{:w$}", test.bold(), w = len * 2);
 	assert!(s1.len() > len * 2);
 }
 

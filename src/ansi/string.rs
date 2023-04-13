@@ -1,7 +1,9 @@
 use std::fmt::{Debug, Display};
 
+use crate::{Colored, Styled};
+
 use super::{
-	colors::Color, consts::*, utils::UnsafeBytes, Style, COLOR_STR_LENGTH, STYLE_STR_LENGTH,
+	colors::Color, consts::*, utils::UnsafeBytes, BitFlag, Style, COLOR_STR_LENGTH, STYLE_STR_LENGTH,
 };
 
 #[derive(PartialEq, Clone, Debug)]
@@ -27,7 +29,7 @@ impl<T> ANSIString<T> {
 	}
 
 	#[inline]
-	pub fn to_string(&self) -> String
+	pub fn to_string(self) -> String
 	where
 		T: AsRef<str>,
 	{
@@ -37,7 +39,7 @@ impl<T> ANSIString<T> {
 		let mut buf = String::with_capacity(self.inner.as_ref().len() + ANSI_STRING_PADDING);
 
 		let mut formatter = core::fmt::Formatter::new(&mut buf);
-		std::fmt::Display::fmt(self, &mut formatter)
+		std::fmt::Display::fmt(&self, &mut formatter)
 			.expect("a Display implementation returned an error unexpectedly");
 
 		buf
@@ -143,7 +145,76 @@ impl<T: AsRef<str>> Display for ANSIString<T> {
 
 impl<T: AsRef<str>> From<ANSIString<T>> for String {
 	fn from(value: ANSIString<T>) -> Self {
-		ANSIString::to_string(&value)
+		ANSIString::to_string(value)
+	}
+}
+
+impl<T: AsRef<str>> Styled for T {
+	type Output = ANSIString<T>;
+
+	#[inline]
+	fn set(self, style: BitFlag) -> Self::Output {
+		Self::Output::new(self).set(style)
+	}
+}
+
+impl<T> Styled for ANSIString<T> {
+	type Output = Self;
+
+	#[inline]
+	fn set(mut self, style: BitFlag) -> Self::Output {
+		self.get_or_init_style().enable(style);
+		self
+	}
+}
+
+impl<T> Styled for &mut ANSIString<T> {
+	type Output = ();
+
+	#[inline]
+	fn set(self, style: BitFlag) -> Self::Output {
+		self.get_or_init_style().enable(style)
+	}
+}
+
+impl<T: AsRef<str>> Colored for T {
+	type Output = ANSIString<T>;
+
+	#[inline]
+	fn colorize_fg(self, color: Color) -> Self::Output {
+		Self::Output::new(self).colorize_fg(color)
+	}
+	#[inline]
+	fn colorize_bg(self, color: Color) -> Self::Output {
+		Self::Output::new(self).colorize_bg(color)
+	}
+}
+
+impl<T> Colored for ANSIString<T> {
+	type Output = Self;
+
+	#[inline]
+	fn colorize_fg(mut self, color: Color) -> Self::Output {
+		self.fg = Some(color);
+		self
+	}
+	#[inline]
+	fn colorize_bg(mut self, color: Color) -> Self::Output {
+		self.bg = Some(color);
+		self
+	}
+}
+
+impl<T> Colored for &mut ANSIString<T> {
+	type Output = ();
+
+	#[inline]
+	fn colorize_fg(self, color: Color) -> Self::Output {
+		self.fg = Some(color)
+	}
+	#[inline]
+	fn colorize_bg(self, color: Color) -> Self::Output {
+		self.bg = Some(color)
 	}
 }
 
@@ -153,7 +224,7 @@ mod test {
 
 	use test::Bencher;
 
-	use crate::{Colored, Styled};
+	use crate::Styled;
 
 	// const SMALL_STR: &str = "Hello 12345";
 

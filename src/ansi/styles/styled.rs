@@ -1,5 +1,3 @@
-use crate::ansi::string::ANSIString;
-
 use super::BitFlag;
 
 pub trait Styled
@@ -8,6 +6,7 @@ where
 {
 	type Output;
 
+	#[doc(hidden)]
 	fn set(self, style: BitFlag) -> Self::Output;
 
 	#[inline]
@@ -41,33 +40,5 @@ where
 	#[inline]
 	fn strikethrough(self) -> Self::Output {
 		self.set(BitFlag::Strikethrough)
-	}
-}
-
-impl<T: AsRef<str>> Styled for T {
-	type Output = ANSIString<T>;
-
-	#[inline]
-	fn set(self, style: BitFlag) -> Self::Output {
-		Self::Output::new(self).set(style)
-	}
-}
-
-impl<T> Styled for ANSIString<T> {
-	type Output = Self;
-
-	#[inline]
-	fn set(mut self, style: BitFlag) -> Self::Output {
-		self.get_or_init_style().enable(style);
-		self
-	}
-}
-
-impl<T> Styled for &mut ANSIString<T> {
-	type Output = ();
-
-	#[inline]
-	fn set(self, style: BitFlag) -> Self::Output {
-		self.get_or_init_style().enable(style)
 	}
 }

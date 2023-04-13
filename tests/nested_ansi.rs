@@ -10,7 +10,7 @@ fn single_nested_ansi_string_at_a_time() {
 	wrapping\x1b[0m";
 
 	println!("{}", should_be);
-	assert_eq!(should_be, res.to_string());
+	assert_eq!(should_be, res.clone().to_string());
 
 	let res = format!("Red {res} wrapping").red().strikethrough();
 

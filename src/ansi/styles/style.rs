@@ -10,17 +10,6 @@ pub struct Style(u8);
 
 impl Style {
 	#[inline]
-	fn to_string(&self) -> String {
-		let mut buf = String::with_capacity(STYLE_STR_LENGTH);
-
-		let mut formatter = core::fmt::Formatter::new(&mut buf);
-		std::fmt::Display::fmt(self, &mut formatter)
-			.expect("a Display implementation returned an error unexpectedly");
-
-		buf
-	}
-
-	#[inline]
 	pub(crate) fn enable(&mut self, style: BitFlag) {
 		self.0 |= style
 	}
@@ -61,10 +50,5 @@ mod test {
 	#[bench]
 	fn styles_iter(b: &mut Bencher) {
 		b.iter(|| Style(255).styles().count())
-	}
-
-	#[bench]
-	fn to_string(b: &mut Bencher) {
-		b.iter(|| Style(255).to_string())
 	}
 }

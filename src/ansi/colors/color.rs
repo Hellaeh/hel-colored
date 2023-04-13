@@ -14,19 +14,6 @@ pub(crate) const COLOR_STR_LENGTH: usize = 11;
 #[derive(Clone, Debug, PartialEq)]
 pub struct Color(u8, u8, u8);
 
-impl Color {
-	#[inline]
-	fn to_string(&self) -> String {
-		let mut buf = String::with_capacity(COLOR_STR_LENGTH);
-
-		let mut formatter = core::fmt::Formatter::new(&mut buf);
-		std::fmt::Display::fmt(self, &mut formatter)
-			.expect("a Display implementation returned an error unexpectedly");
-
-		buf
-	}
-}
-
 impl Display for Color {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{};{};{}", self.0, self.1, self.2)

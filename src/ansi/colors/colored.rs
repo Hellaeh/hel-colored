@@ -1,5 +1,3 @@
-use crate::ansi::string::ANSIString;
-
 use super::color::*;
 
 pub trait Colored
@@ -8,7 +6,9 @@ where
 {
 	type Output;
 
+	#[doc(hidden)]
 	fn colorize_fg(self, color: Color) -> Self::Output;
+	#[doc(hidden)]
 	fn colorize_bg(self, color: Color) -> Self::Output;
 
 	// foreground
@@ -78,46 +78,5 @@ where
 	#[inline]
 	fn on_rgb(self, rgb: (u8, u8, u8)) -> Self::Output {
 		self.colorize_bg(rgb.into())
-	}
-}
-
-impl<T: AsRef<str>> Colored for T {
-	type Output = ANSIString<T>;
-
-	#[inline]
-	fn colorize_fg(self, color: Color) -> Self::Output {
-		Self::Output::new(self).colorize_fg(color)
-	}
-	#[inline]
-	fn colorize_bg(self, color: Color) -> Self::Output {
-		Self::Output::new(self).colorize_bg(color)
-	}
-}
-
-impl<T> Colored for ANSIString<T> {
-	type Output = Self;
-
-	#[inline]
-	fn colorize_fg(mut self, color: Color) -> Self::Output {
-		self.fg = Some(color);
-		self
-	}
-	#[inline]
-	fn colorize_bg(mut self, color: Color) -> Self::Output {
-		self.bg = Some(color);
-		self
-	}
-}
-
-impl<T> Colored for &mut ANSIString<T> {
-	type Output = ();
-
-	#[inline]
-	fn colorize_fg(self, color: Color) -> Self::Output {
-		self.fg = Some(color)
-	}
-	#[inline]
-	fn colorize_bg(self, color: Color) -> Self::Output {
-		self.bg = Some(color)
 	}
 }
