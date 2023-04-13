@@ -76,7 +76,9 @@ mod test {
 
 	#[test]
 	fn bit_or_assign() {
-		let mut bits = 0b01110000;
+		let mut bits = 0b0111_0000;
+
+		assert!(bits & BitFlag::Bold != BitFlag::Bold);
 
 		bits |= BitFlag::Bold;
 

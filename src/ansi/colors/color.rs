@@ -26,17 +26,3 @@ impl From<(u8, u8, u8)> for Color {
 		Self(red, green, blue)
 	}
 }
-
-#[cfg(test)]
-mod test {
-	extern crate test;
-
-	use test::Bencher;
-
-	use super::Color;
-
-	#[bench]
-	fn to_string(b: &mut Bencher) {
-		b.iter(|| Color(125, 125, 125).to_string())
-	}
-}
