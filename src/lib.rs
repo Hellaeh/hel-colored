@@ -1,9 +1,12 @@
+//! This crate provides a fast and easy way to color and style string using ANSI escape sequences
+//! Repo: https://github.com/Hellaeh/hel-colored
 #![feature(test)]
 #![feature(fmt_internals)]
+#![feature(concat_idents)]
+#![warn(missing_docs)]
 // We do implement our own `to_string` method along `fmt::Display`
 // TODO custom formatter?
 #[allow(clippy::inherent_to_string_shadow_display)]
-//
 mod ansi;
 mod builder;
 

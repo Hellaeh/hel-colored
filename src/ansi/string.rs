@@ -6,6 +6,7 @@ use super::{
 	colors::Color, consts::*, utils::UnsafeBytes, BitFlag, Style, COLOR_STR_LENGTH, STYLE_STR_LENGTH,
 };
 
+/// A struct that owns `T`, also holds ANSI styles and colors
 #[derive(PartialEq, Clone, Debug)]
 pub struct ANSIString<T> {
 	pub(crate) inner: T,
@@ -24,10 +25,13 @@ impl<T> ANSIString<T> {
 		}
 	}
 
+	/// Returns ownership of `T`, while consuming `self`
 	pub fn clear(self) -> T {
 		self.inner
 	}
 
+	/// `to_string` method implemented directly on struct
+	/// for performance reasons
 	#[inline]
 	pub fn to_string(self) -> String
 	where
@@ -45,21 +49,25 @@ impl<T> ANSIString<T> {
 		buf
 	}
 
+	/// Returns `true` if foreground (letters) of a string is colored
 	#[inline]
 	pub fn is_foreground_colored(&self) -> bool {
 		self.fg.is_some()
 	}
 
+	/// Return `true` if background (bounding box) of a string is colored
 	#[inline]
 	pub fn is_background_colored(&self) -> bool {
 		self.bg.is_some()
 	}
 
+	/// Returns `true` if both background and foreground of a string is colored
 	#[inline]
 	pub fn is_colored(&self) -> bool {
 		self.is_foreground_colored() || self.is_background_colored()
 	}
 
+	/// Return `true` if string is styled, e.g. `bold` or `italic`
 	#[inline]
 	pub fn is_styled(&self) -> bool {
 		self.style.is_some()

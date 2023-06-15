@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Display, Write};
 
 use super::BitFlag;
 
@@ -15,10 +15,10 @@ impl Style {
 	}
 
 	#[inline]
-	fn styles(&self) -> impl Iterator<Item = &str> {
+	fn styles(&self) -> impl Iterator<Item = char> + '_ {
 		BitFlag::into_iter()
 			.filter(|&bit| self.0 & bit == bit)
-			.map(|value| value.into())
+			.map(std::convert::Into::into)
 	}
 }
 
@@ -27,12 +27,12 @@ impl Display for Style {
 		let mut styles = self.styles();
 
 		if let Some(style) = styles.next() {
-			f.write_str(style)?;
+			f.write_char(style)?;
 		}
 
 		for style in styles {
-			f.write_str(";")?;
-			f.write_str(style)?;
+			f.write_char(';')?;
+			f.write_char(style)?;
 		}
 
 		Ok(())

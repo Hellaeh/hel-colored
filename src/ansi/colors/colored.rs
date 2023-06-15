@@ -1,82 +1,55 @@
 use super::color::*;
 
-pub trait Colored
-where
-	Self: Sized,
-{
+macro_rules! make {
+	($fn_name: ident$(,)? $($fn_args: ident: $arg_type: ty)*$(,)?; $method: ident, $($method_args: expr),*; $doc: expr $(,$doc_arg: tt)*) => {
+		// rust-analyzer wont pick up macro in doc attributes yet
+		// https://github.com/rust-lang/rust-analyzer/issues/8092
+		#[doc = $doc]
+		///
+		/// # Example
+		/// ```
+		/// use hel_colored::{ANSIString, Colored};
+		///
+		/// // Does not allocate until needed
+		#[doc = concat!("let colored_str: ANSIString<&str> = \"Hello World!\".", stringify!($fn_name), stringify!(($($doc_arg)*);))]
+		/// println!("{colored_str}");
+		/// ```
+		#[inline]
+		fn $fn_name(self, $($fn_args: $arg_type),*) -> Self::Output {
+			self.$method($($method_args),*)
+		}
+	};
+
+	($first_fn_name: ident, $second_fn_name: ident, $arg: expr) => {
+		make!($first_fn_name; colorize_fg, $arg; make!(doc, "foreground", $first_fn_name));
+		make!($second_fn_name; colorize_bg, $arg; make!(doc, "background", $first_fn_name));
+	};
+
+	(doc, $part: expr, $color: expr) => {
+		concat!("Colors ", $part, " of a string in ", stringify!($color))
+	};
+}
+
+/// A helper trait for [`ANSIString`] and [`ANSIStringBuilder`]
+pub trait Colored: Sized {
+	/// This is returned by all methods
 	type Output;
 
+	/// One should not use this method directly
 	#[doc(hidden)]
 	fn colorize_fg(self, color: Color) -> Self::Output;
+	/// One should not use this method directly
 	#[doc(hidden)]
 	fn colorize_bg(self, color: Color) -> Self::Output;
 
-	// foreground
-	#[inline]
-	fn blue(self) -> Self::Output {
-		self.colorize_fg(BLUE)
-	}
-	#[inline]
-	fn cyan(self) -> Self::Output {
-		self.colorize_fg(CYAN)
-	}
-	#[inline]
-	fn green(self) -> Self::Output {
-		self.colorize_fg(GREEN)
-	}
-	#[inline]
-	fn magenta(self) -> Self::Output {
-		self.colorize_fg(MAGENTA)
-	}
-	#[inline]
-	fn orange(self) -> Self::Output {
-		self.colorize_fg(ORANGE)
-	}
-	#[inline]
-	fn red(self) -> Self::Output {
-		self.colorize_fg(RED)
-	}
-	#[inline]
-	fn yellow(self) -> Self::Output {
-		self.colorize_fg(YELLOW)
-	}
+	make!(blue, on_blue, BLUE);
+	make!(cyan, on_cyan, CYAN);
+	make!(green, on_green, GREEN);
+	make!(magenta, on_magenta, MAGENTA);
+	make!(orange, on_orange, ORANGE);
+	make!(red, on_red, RED);
+	make!(yellow, on_yellow, YELLOW);
 
-	// background
-	#[inline]
-	fn on_blue(self) -> Self::Output {
-		self.colorize_bg(BLUE)
-	}
-	#[inline]
-	fn on_cyan(self) -> Self::Output {
-		self.colorize_bg(CYAN)
-	}
-	#[inline]
-	fn on_green(self) -> Self::Output {
-		self.colorize_bg(GREEN)
-	}
-	#[inline]
-	fn on_magenta(self) -> Self::Output {
-		self.colorize_bg(MAGENTA)
-	}
-	#[inline]
-	fn on_orange(self) -> Self::Output {
-		self.colorize_bg(ORANGE)
-	}
-	#[inline]
-	fn on_red(self) -> Self::Output {
-		self.colorize_bg(RED)
-	}
-	#[inline]
-	fn on_yellow(self) -> Self::Output {
-		self.colorize_bg(YELLOW)
-	}
-
-	#[inline]
-	fn rgb(self, rgb: (u8, u8, u8)) -> Self::Output {
-		self.colorize_fg(rgb.into())
-	}
-	#[inline]
-	fn on_rgb(self, rgb: (u8, u8, u8)) -> Self::Output {
-		self.colorize_bg(rgb.into())
-	}
+	make!(rgb, rgb: (u8, u8, u8); colorize_fg, rgb.into(); make!(doc, "foreground", rgb), (255, 120, 120));
+	make!(on_rgb, rgb: (u8, u8, u8); colorize_bg, rgb.into(); make!(doc, "background", rgb), (255, 120, 120));
 }

@@ -1,26 +1,17 @@
 use super::BitFlag;
 
-const BOLD: &str = "1";
-const DIM: &str = "2";
-const ITALIC: &str = "3";
-const UNDERLINE: &str = "4";
-const BLINK: &str = "5";
-const INVERT: &str = "7";
-const HIDE: &str = "8";
-const STRIKETHROUGH: &str = "9";
-
-impl From<BitFlag> for &str {
+impl From<BitFlag> for char {
 	#[inline]
 	fn from(value: BitFlag) -> Self {
 		match value {
-			BitFlag::Bold => BOLD,
-			BitFlag::Dim => DIM,
-			BitFlag::Italic => ITALIC,
-			BitFlag::Underline => UNDERLINE,
-			BitFlag::Blink => BLINK,
-			BitFlag::Invert => INVERT,
-			BitFlag::Hide => HIDE,
-			BitFlag::Strikethrough => STRIKETHROUGH,
+			BitFlag::Bold => '1',
+			BitFlag::Dim => '2',
+			BitFlag::Italic => '3',
+			BitFlag::Underline => '4',
+			BitFlag::Blink => '5',
+			BitFlag::Invert => '7',
+			BitFlag::Hide => '8',
+			BitFlag::Strikethrough => '9',
 		}
 	}
 }

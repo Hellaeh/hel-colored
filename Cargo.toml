@@ -1,11 +1,12 @@
 [package]
 name = "hel-colored"
 authors = ["Hellaeh <me@hellaeh.com>"]
-version = "0.4.1"
+version = "0.4.3"
 edition = "2021"
 description = "ANSI string colorizer and styler"
 license = "GPL-3.0"
 repository = "https://github.com/Hellaeh/hel-colored.git"
+keywords = ["color", "ansi", "style", "string"]
 
 [dev-dependencies]
 colored = "2.0.0"

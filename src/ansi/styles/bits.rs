@@ -1,5 +1,5 @@
 #[repr(u8)]
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum BitFlag {
 	Bold = 1 << 0,
 	Dim = 1 << 1,
@@ -11,6 +11,7 @@ pub enum BitFlag {
 	Strikethrough = 1 << 7,
 }
 
+#[derive(Debug)]
 pub struct BitFlagIter(u8);
 
 impl std::ops::BitAnd<BitFlag> for u8 {
