@@ -49,6 +49,11 @@ fn output() {
 	println!("{}", test.on_yellow());
 	println!("{}", test.on_rgb((0xff, 0xff, 0xff)));
 
+	let colored_str = "green string".green();
+	let wrapped_str = format!("even wrapped {colored_str} works").red();
+
+	println!("{wrapped_str}");
+
 	panic!("Have to fail")
 }
 
