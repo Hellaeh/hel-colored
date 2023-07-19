@@ -2,8 +2,6 @@ use super::color::*;
 
 macro_rules! make {
 	($fn_name: ident$(,)? $($fn_args: ident: $arg_type: ty)*$(,)?; $method: ident, $($method_args: expr),*; $doc: expr $(,$doc_arg: tt)*) => {
-		// rust-analyzer wont pick up macro in doc attributes yet
-		// https://github.com/rust-lang/rust-analyzer/issues/8092
 		#[doc = $doc]
 		///
 		/// # Example
@@ -35,10 +33,8 @@ pub trait Colored: Sized {
 	/// This is returned by all methods
 	type Output;
 
-	/// One should not use this method directly
 	#[doc(hidden)]
 	fn colorize_fg(self, color: Color) -> Self::Output;
-	/// One should not use this method directly
 	#[doc(hidden)]
 	fn colorize_bg(self, color: Color) -> Self::Output;
 

@@ -1,4 +1,6 @@
 #![feature(test)]
+#![allow(clippy::assertions_on_constants)]
+
 extern crate test;
 
 use std::cmp::Ordering;
@@ -165,6 +167,7 @@ fn bigger_to_string(b: &mut Bencher) {
 
 #[bench]
 #[ignore = "For comparison only. Disabled by default"]
+#[cfg(feature = "nested")]
 fn small_nested(b: &mut Bencher) {
 	let this = bench(b, || {
 		use hel_colored::{Colored, Styled};
@@ -199,6 +202,7 @@ fn small_nested(b: &mut Bencher) {
 
 #[bench]
 #[ignore = "For comparison only. Disabled by default"]
+#[cfg(feature = "nested")]
 fn bigger_nested(b: &mut Bencher) {
 	let this = bench(b, || {
 		use hel_colored::{Colored, Styled};

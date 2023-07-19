@@ -15,6 +15,7 @@ pub(crate) const COLOR_STR_LENGTH: usize = 11;
 pub struct Color(u8, u8, u8);
 
 impl Display for Color {
+	#[inline]
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{};{};{}", self.0, self.1, self.2)
 	}

@@ -2,7 +2,7 @@
 //! Repo: https://github.com/Hellaeh/hel-colored
 #![feature(test)]
 #![feature(fmt_internals)]
-#![feature(concat_idents)]
+// #![feature(concat_idents)]
 #![warn(missing_docs)]
 // We do implement our own `to_string` method along `fmt::Display`
 // TODO custom formatter?

@@ -2,9 +2,10 @@ use std::fmt::{Debug, Display};
 
 use crate::{Colored, Styled};
 
-use super::{
-	colors::Color, consts::*, utils::UnsafeBytes, BitFlag, Style, COLOR_STR_LENGTH, STYLE_STR_LENGTH,
-};
+use super::{colors::Color, consts::*, BitFlag, Style, COLOR_STR_LENGTH, STYLE_STR_LENGTH};
+
+#[cfg(feature = "nested")]
+use super::utils::UnsafeBytes;
 
 /// A struct that owns `T`, also holds ANSI styles and colors
 #[derive(PartialEq, Clone, Debug)]
@@ -37,14 +38,20 @@ impl<T> ANSIString<T> {
 	where
 		T: AsRef<str>,
 	{
-		/// 2x11(color) + 15(style) + 20(for escape bytes and reset seq + whynot)
-		const ANSI_STRING_PADDING: usize = 2 * COLOR_STR_LENGTH + STYLE_STR_LENGTH + 20;
+		const NESTED: usize = if cfg!(feature = "nested") {
+			30
+		} else {
+			SGR_RESET_SEQ_STR.len()
+		};
+
+		/// 2x11(color) + 15(style) + 20(for escape bytes and reset seq)
+		const ANSI_STRING_PADDING: usize = 2 * COLOR_STR_LENGTH + STYLE_STR_LENGTH + NESTED;
 
 		let mut buf = String::with_capacity(self.inner.as_ref().len() + ANSI_STRING_PADDING);
 
 		let mut formatter = core::fmt::Formatter::new(&mut buf);
 		std::fmt::Display::fmt(&self, &mut formatter)
-			.expect("a Display implementation returned an error unexpectedly");
+			.expect("Display implementation returned an error unexpectedly");
 
 		buf
 	}
@@ -80,6 +87,7 @@ impl<T> ANSIString<T> {
 
 	#[inline]
 	fn fmt_sgr(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		// [0; to reset each nested part of string
 		f.write_str("\x1b[0;")?;
 
 		let mut wrote = false;
@@ -112,6 +120,7 @@ impl<T> ANSIString<T> {
 	}
 
 	#[inline]
+	#[cfg(feature = "nested")]
 	fn fmt_inner(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
 	where
 		T: AsRef<str>,
@@ -137,12 +146,20 @@ impl<T> ANSIString<T> {
 			std::fmt::Display::fmt(str, f)
 		}
 	}
+
+	#[inline(always)]
+	#[cfg(not(feature = "nested"))]
+	fn fmt_inner(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
+	where
+		T: AsRef<str>,
+	{
+		std::fmt::Display::fmt(self.inner.as_ref(), f)
+	}
 }
 
 impl<T: AsRef<str>> Display for ANSIString<T> {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		ANSIString::fmt_sgr(self, f)?;
-		// Somewhat expensive
 		ANSIString::fmt_inner(self, f)?;
 
 		f.write_str(SGR_RESET_SEQ_STR)?;

@@ -26,7 +26,6 @@ pub trait Styled: Sized {
 	/// This is returned by all methods
 	type Output;
 
-	/// One should not use this method directly
 	#[doc(hidden)]
 	fn set(self, style: BitFlag) -> Self::Output;
 

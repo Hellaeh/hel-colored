@@ -1,3 +1,5 @@
+#![cfg(feature = "nested")]
+
 use hel_colored::{Colored, Styled};
 
 #[test]
