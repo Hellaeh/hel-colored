@@ -6,8 +6,8 @@ ANSI string colorizer and styler
 
 - Lazy (no-alloc, no-copy, until needed, e.g. `to_string` called)
 - Made with performance in mind
-- Only RGB support (no default CLI colors)
-- As of now there's no way to opt-out of nesting check, which should lead to significant performance boost
+- Only RGB(TrueColor) support (no default CLI colors)
+- No nested checks by default, which leads up to 2x performance.
 
 ## Examples
 
@@ -17,7 +17,11 @@ ANSI string colorizer and styler
 "Hello World!".bold().blue().underline();
 ```
 
-### Or nested
+### Nested with "nested" feature
+
+```
+cargo add hel-colored -F nested
+```
 
 ```rust
 let blue_text: ANSIString<&str> = "blue text".blue();
