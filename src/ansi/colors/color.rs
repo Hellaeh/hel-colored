@@ -4,7 +4,7 @@ pub(crate) const BLUE: Color = Color(50, 50, 225);
 pub(crate) const CYAN: Color = Color(100, 225, 225);
 pub(crate) const GREEN: Color = Color(50, 225, 50);
 pub(crate) const MAGENTA: Color = Color(225, 100, 225);
-pub(crate) const ORANGE: Color = Color(225, 100, 100);
+pub(crate) const ORANGE: Color = Color(255, 150, 50);
 pub(crate) const RED: Color = Color(225, 50, 50);
 pub(crate) const YELLOW: Color = Color(225, 225, 50);
 
