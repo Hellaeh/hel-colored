@@ -36,7 +36,7 @@ fn output() {
 	println!("{}", test.orange());
 	println!("{}", test.red());
 	println!("{}", test.yellow());
-	println!("{}", test.rgb((0xff, 0xff, 0xff)));
+	println!("{}", test.rgb(0xff, 0xff, 0xff));
 
 	println!("{sep}");
 
@@ -47,7 +47,7 @@ fn output() {
 	println!("{}", test.on_orange());
 	println!("{}", test.on_red());
 	println!("{}", test.on_yellow());
-	println!("{}", test.on_rgb((0xff, 0xff, 0xff)));
+	println!("{}", test.on_rgb(0xff, 0xff, 0xff));
 
 	let colored_str = "green string".green();
 	let wrapped_str = format!("even wrapped {colored_str} works").red();
@@ -64,7 +64,7 @@ fn primary() {
 	assert_eq!(wrap!("38;2;225;50;50"), test.red().to_string());
 	assert_eq!(
 		wrap!("38;2;255;255;255"),
-		test.rgb((255, 255, 255)).to_string()
+		test.rgb(255, 255, 255).to_string()
 	);
 	assert_eq!(wrap!("38;2;225;50;50"), test.to_owned().red().to_string());
 	assert_eq!(wrap!("1"), test.bold().to_string());

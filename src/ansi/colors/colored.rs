@@ -1,7 +1,7 @@
 use super::color::*;
 
 macro_rules! make {
-	($fn_name: ident$(,)? $($fn_args: ident: $arg_type: ty)*$(,)?; $method: ident, $($method_args: expr),*; $doc: expr $(,$doc_arg: tt)*) => {
+	($fn_name: ident$(,)? $($fn_args: ident: $arg_type: ty$(,)?)*; $method: ident, $($method_args: expr),*; $doc: expr $(,$doc_arg: tt)*) => {
 		#[doc = $doc]
 		///
 		/// # Example
@@ -9,7 +9,7 @@ macro_rules! make {
 		/// use hel_colored::{ANSIString, Colored};
 		///
 		/// // Does not allocate until needed
-		#[doc = concat!("let colored_str: ANSIString<&str> = \"Hello World!\".", stringify!($fn_name), stringify!(($($doc_arg)*);))]
+		#[doc = concat!("let colored_str: ANSIString<&str> = \"Hello World!\".", stringify!($fn_name), stringify!(($($doc_arg), *);))]
 		/// println!("{colored_str}");
 		/// ```
 		#[inline]
@@ -46,6 +46,6 @@ pub trait Colored: Sized {
 	make!(red, on_red, RED);
 	make!(yellow, on_yellow, YELLOW);
 
-	make!(rgb, rgb: (u8, u8, u8); colorize_fg, rgb.into(); make!(doc, "foreground", rgb), (255, 120, 120));
-	make!(on_rgb, rgb: (u8, u8, u8); colorize_bg, rgb.into(); make!(doc, "background", rgb), (255, 120, 120));
+	make!(rgb, r: u8, g: u8, b: u8; colorize_fg, Color::new(r, g, b); make!(doc, "foreground", rgb), 255, 120, 120);
+	make!(on_rgb, r: u8, g: u8, b: u8; colorize_bg, Color::new(r, g, b); make!(doc, "background", rgb), 255, 120, 120);
 }

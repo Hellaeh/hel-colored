@@ -11,8 +11,17 @@ pub(crate) const YELLOW: Color = Color(225, 225, 50);
 /// 3x3(u8) + 2x1(";") = 11
 pub(crate) const COLOR_STR_LENGTH: usize = 11;
 
+/// RGB tuple struct
 #[derive(Clone, Debug, PartialEq)]
 pub struct Color(u8, u8, u8);
+
+impl Color {
+	/// Constructs a new `Color` with provided RGB arguments
+	#[inline]
+	pub const fn new(r: u8, g: u8, b: u8) -> Self {
+		Self(r, g, b)
+	}
+}
 
 impl Display for Color {
 	#[inline]
@@ -21,9 +30,25 @@ impl Display for Color {
 	}
 }
 
-impl From<(u8, u8, u8)> for Color {
+impl const From<(u8, u8, u8)> for Color {
 	#[inline]
-	fn from((red, green, blue): (u8, u8, u8)) -> Self {
-		Self(red, green, blue)
+	fn from(tup: (u8, u8, u8)) -> Self {
+		unsafe { std::mem::transmute(tup) }
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::Color;
+
+	#[test]
+	fn from_impl() {
+		let tup = (10, 20, 30);
+
+		let color: Color = tup.into();
+
+		assert_eq!(tup.0, color.0);
+		assert_eq!(tup.1, color.1);
+		assert_eq!(tup.2, color.2);
 	}
 }

@@ -7,6 +7,7 @@ mod utils;
 pub(crate) use colors::*;
 pub(crate) use styles::*;
 
+pub use colors::Color;
 pub use colors::Colored;
 pub use string::ANSIString;
 pub use styles::Styled;

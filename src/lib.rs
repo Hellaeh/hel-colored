@@ -2,6 +2,7 @@
 //! Repo: https://github.com/Hellaeh/hel-colored
 #![feature(test)]
 #![feature(fmt_internals)]
+#![feature(const_trait_impl)]
 // #![feature(concat_idents)]
 #![warn(missing_docs)]
 // We do implement our own `to_string` method along `fmt::Display`
@@ -11,6 +12,7 @@ mod ansi;
 mod builder;
 
 pub use ansi::ANSIString;
+pub use ansi::Color;
 pub use ansi::Colored;
 pub use ansi::Styled;
 
