@@ -30,7 +30,7 @@ impl Display for Color {
 	}
 }
 
-impl const From<(u8, u8, u8)> for Color {
+impl From<(u8, u8, u8)> for Color {
 	#[inline]
 	fn from(tup: (u8, u8, u8)) -> Self {
 		unsafe { std::mem::transmute(tup) }

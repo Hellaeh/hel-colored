@@ -14,7 +14,7 @@ pub enum BitFlag {
 #[derive(Debug)]
 pub struct BitFlagIter(u8);
 
-impl const std::ops::BitAnd<BitFlag> for u8 {
+impl std::ops::BitAnd<BitFlag> for u8 {
 	type Output = u8;
 
 	#[inline]
@@ -23,14 +23,14 @@ impl const std::ops::BitAnd<BitFlag> for u8 {
 	}
 }
 
-impl const std::ops::BitOrAssign<BitFlag> for u8 {
+impl std::ops::BitOrAssign<BitFlag> for u8 {
 	#[inline]
 	fn bitor_assign(&mut self, rhs: BitFlag) {
 		*self |= rhs as u8
 	}
 }
 
-impl const PartialEq<BitFlag> for u8 {
+impl PartialEq<BitFlag> for u8 {
 	#[inline]
 	fn eq(&self, other: &BitFlag) -> bool {
 		*self == *other as u8
@@ -45,7 +45,7 @@ impl BitFlag {
 	}
 }
 
-impl const Iterator for BitFlagIter {
+impl Iterator for BitFlagIter {
 	type Item = BitFlag;
 
 	#[inline]
@@ -54,7 +54,7 @@ impl const Iterator for BitFlagIter {
 			return None;
 		}
 
-		let res = unsafe { std::mem::transmute(self.0) };
+		let res = unsafe { std::mem::transmute::<u8, BitFlag>(self.0) };
 
 		self.0 <<= 1;
 
