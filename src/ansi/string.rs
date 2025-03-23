@@ -1,4 +1,4 @@
-use std::fmt::{Debug, Display};
+use std::fmt::{Debug, Display, FormattingOptions};
 
 use crate::{Colored, Styled};
 
@@ -48,8 +48,9 @@ impl<T> ANSIString<T> {
 		const ANSI_STRING_PADDING: usize = 2 * COLOR_STR_LENGTH + STYLE_STR_LENGTH + NESTED;
 
 		let mut buf = String::with_capacity(self.inner.as_ref().len() + ANSI_STRING_PADDING);
+		let options = FormattingOptions::new();
+		let mut formatter = options.create_formatter(&mut buf);
 
-		let mut formatter = core::fmt::Formatter::new(&mut buf);
 		std::fmt::Display::fmt(&self, &mut formatter)
 			.expect("Display implementation returned an error unexpectedly");
 
